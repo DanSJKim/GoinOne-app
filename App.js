@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import MainTabNavigator from './src/navigations/MainTabNavigator';
+import MainStackNavigator from './src/navigations/MainStackNavigator';
+
 // import GlobalStyles from './src/styles/GlobalStyles';
 
 const App = () => {
+  console.log('app?!');
   return (
     <>
-      <MainTabNavigator />
+      <MainStackNavigator />
     </>
   );
 };

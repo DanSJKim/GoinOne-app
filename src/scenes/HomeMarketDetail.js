@@ -1,33 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import styled from 'styled-components';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import HighchartsReactNative from '@highcharts/highcharts-react-native';
-import TradeOrder from '../components/homeMarket/TradeOrder';
+import TradeOrderList from '../components/homeMarket/TradeOrderList';
 import RealtimeList from '../components/homeMarket/RealtimeList';
+import BottomSheet from 'reanimated-bottom-sheet';
+import { StackActions } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import styled from 'styled-components';
 
-const HomeMarketDetail = () => {
+const HomeMarketDetail = ({ route, navigation }) => {
   const [tradingDatas, setTradingDatas] = useState([]);
+  const { symbol, name, nowprice, volume, coinIndex } = route.params;
   let tradingPrices = [];
+  console.log('route::: ', route.params.nav);
 
-  useEffect(() => {
-    // 거래 종가 가져오기
-    const getDatas = async () => {
-      const response = await fetch(
-        'https://api.upbit.com/v1/candles/days?market=KRW-BTC&count=100'
+  navigation.setOptions({
+    headerTitle: () => {
+      return (
+        <HeaderWrapper>
+          <HeaderSymbol>{symbol} / KRW</HeaderSymbol>
+          <HeaderName>{name}</HeaderName>
+        </HeaderWrapper>
       );
-      const jsonResponse = await response.json();
-      setTradingDatas(jsonResponse);
-      jsonResponse.map(item => tradingPrices.push(item.trade_price));
-      setChartOptions(prevState => {
-        prevState.series[0].data = tradingPrices;
-        return {
-          ...prevState
-        };
-      });
-    };
+    },
+    headerLeft: () => (
+      <Ionicons
+        name="ios-arrow-round-back"
+        size={40}
+        onPress={() => {
+          const popAction = StackActions.pop();
+          navigation.dispatch(popAction);
+        }}
+        style={{ marginLeft: 15 }}
+      />
+    )
+  });
 
-    getDatas();
-  }, []);
+  // useEffect(() => {
+  //   console.log('HomeMarketDetail UseEffect:');
+
+  //   fetch(
+  //     `http://10.58.2.252:8000/exchange/report/${coinIndex + 1}/days`,
+  //     // `https://api.upbit.com/v1/candles/days?market=KRW-${symbol}&count=200`,
+  //     {
+  //       method: 'GET' // or 'PUT'
+  //     }
+  //   )
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       setTradingDatas(data.data);
+  //       data.data.map(item => {
+  //         tradingPrices.push(parseInt(item.trade_price));
+  //         console.log('item: ', parseInt(item.trade_price));
+  //       });
+  //       setChartOptions(prevState => {
+  //         prevState.series[0].data = tradingPrices;
+  //         return {
+  //           ...prevState
+  //         };
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.error('Error:', error);
+  //     });
+
+  //   // getDatas();
+  // }, []);
 
   const [chartOptions, setChartOptions] = useState(
     {
@@ -63,7 +101,7 @@ const HomeMarketDetail = () => {
           color: {
             linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
             stops: [
-              [0, '#dee0ff'],
+              [0, '#ff7d9d'],
               [1, '#ffffff']
             ]
           },
@@ -72,7 +110,7 @@ const HomeMarketDetail = () => {
       ],
       plotOptions: {
         series: {
-          lineColor: '#1763b6',
+          lineColor: '#e44f72',
           lineWidth: 1,
           marker: {
             enabled: false
@@ -82,7 +120,14 @@ const HomeMarketDetail = () => {
     },
     [tradingPrices]
   );
-  console.log('[series[0].data]: ', chartOptions.series[0].data);
+
+  renderContent = () => {
+    <View>12312313</View>;
+  };
+
+  renderHeader = () => {
+    <View>53555</View>;
+  };
 
   return (
     <Container>
@@ -90,9 +135,9 @@ const HomeMarketDetail = () => {
         {/* 코인 가격 정보 */}
         <LeftContainer>
           <View>
-            <Price>6,738,000</Price>
-            <FluctuationPrice>162,000</FluctuationPrice>
-            <TradingValue>42,829백만</TradingValue>
+            <Price>{parseInt(nowprice)}</Price>
+            <FluctuationPrice>162,0200</FluctuationPrice>
+            <TradingValue>{parseInt(volume)}</TradingValue>
           </View>
           <FluctuationRateWrapper>
             <FluctuationRate>-2.38%</FluctuationRate>
@@ -100,19 +145,27 @@ const HomeMarketDetail = () => {
         </LeftContainer>
         {/* 차트 */}
         <RightContainer>
-          <HighchartsReactNative
-            useCDN={true}
-            styles={styles.chartContainer}
-            options={chartOptions}
-          />
+          <TouchableOpacity onPress={() => console.log('123')}>
+            <HighchartsReactNative
+              useCDN={true}
+              styles={styles.chartContainer}
+              options={chartOptions}
+              animation={false}
+            />
+          </TouchableOpacity>
         </RightContainer>
       </TopContainer>
       <MainContainer>
-        {/* 매수 매도 리스트  */}
-        <TradeOrder />
+        <TradeOrder>
+          {/* 매수, 매도 리스트  */}
+          <TradeOrderList />
+        </TradeOrder>
         {/* 실시간 거래 체결 리스트 */}
-        <RealtimeList />
+        <RealtimeList coinIndex={coinIndex} />
       </MainContainer>
+      <View>
+        <BottomSheet snapPoints={[450, 300, 0]} />
+      </View>
     </Container>
   );
 };
@@ -134,8 +187,6 @@ const Container = styled.SafeAreaView`
   background-color: #fff;
   align-items: center;
 `;
-
-const InnerContainer = styled.View``;
 
 const TopContainer = styled.View`
   display: flex;
@@ -189,5 +240,21 @@ const RightContainer = styled.View``;
 const MainContainer = styled.View`
   display: flex;
   flex-direction: row;
-  margin-top: 13px;
+  margin: 15px;
+  height: 100%;
+`;
+
+const TradeOrder = styled.View``;
+
+const HeaderWrapper = styled.View`
+  align-items: center;
+`;
+const HeaderSymbol = styled.Text`
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 2px;
+`;
+const HeaderName = styled.Text`
+  font-size: 11px;
+  color: #494949;
 `;

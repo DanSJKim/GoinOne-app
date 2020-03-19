@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import styled from 'styled-components';
 
@@ -6,13 +6,44 @@ import styled from 'styled-components';
  *  Market List Item
  */
 
-function MarketItem({ symbol, name, nav }) {
+function MarketItem({ nav, symbol, name, nowprice, volume, coinIndex }) {
+  console.log('coinIndex: ', coinIndex);
+
+  //   useEffect(() => {
+  //   console.log('HomeMarketDetail UseEffect:');
+
+  //   fetch(
+  //     `https://api.upbit.com/v1/candles/days?market=KRW-${symbol}&count=200`,
+  //     {
+  //       method: 'GET' // or 'PUT'
+  //     }
+  //   )
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       setTradingDatas(data);
+  //       data.map(item => tradingPrices.push(item.trade_price));
+  //       setChartOptions(prevState => {
+  //         prevState.series[0].data = tradingPrices;
+  //         return {
+  //           ...prevState
+  //         };
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.error('Error:', error);
+  //     });
+
+  //   // getDatas();
+  // }, []);
   return (
     <TouchableOpacity
       onPress={() => {
         nav.navigation.navigate('HomeMarketDetail', {
-          comments: '123',
-          delComment: '456'
+          symbol,
+          name,
+          nowprice,
+          volume,
+          coinIndex
         });
       }}
     >
@@ -31,9 +62,9 @@ function MarketItem({ symbol, name, nav }) {
           <MarketFullName>{name}</MarketFullName>
         </NameWrapper>
 
-        <MarketCurrentPrice>7,007,000</MarketCurrentPrice>
+        <MarketCurrentPrice>{parseInt(nowprice)}</MarketCurrentPrice>
         <MarketFluctuationRate>-3.63%</MarketFluctuationRate>
-        <MarketTradingValue>50,100 백만</MarketTradingValue>
+        <MarketTradingValue>{parseInt(volume)}</MarketTradingValue>
       </ItemWrapper>
     </TouchableOpacity>
   );

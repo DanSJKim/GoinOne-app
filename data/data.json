@@ -1,0 +1,36 @@
+{
+  "trading": [
+    {
+      "id": "bd7acbea-c1b1-46c2-aed5-3ad53abb2ba",
+      "price": "6,675,000",
+      "quantity": "0.8918"
+    },
+    {
+      "id": "bd7acbea-c1b1-46c2-aed5-3ad53ab28ba",
+      "price": "6,675,000",
+      "quantity": "0.8918"
+    },
+    {
+      "id": "bd7acbea-c1b1-46c2-aed5-3d53abb28ba",
+      "price": "6,675,000",
+      "quantity": "0.8918"
+    }
+  ],
+  "realtime": [
+    {
+      "id": "bd7acbea-c1b1-46c2-aed5-3d3abb28ba",
+      "price": "6,675,000",
+      "quantity": "0.8958"
+    },
+    {
+      "id": "bd7acbea-c1b1-46c2-aed5-3d6abb28ba",
+      "price": "6,575,000",
+      "quantity": "1.2318"
+    },
+    {
+      "id": "bd7acbea-c1b1-46c2-aed5-3d3abb25ba",
+      "price": "6,875,000",
+      "quantity": "0.2918"
+    }
+  ]
+}

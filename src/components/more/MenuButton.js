@@ -17,7 +17,8 @@ export default MenuButton;
 const Container = styled.View`
   display: flex;
   flex-direction: row;
-  border-bottom-width: 0.2px;
+  border-bottom-width: 0.3px;
+  border-color: #858585;
   justify-content: space-between;
 `;
 

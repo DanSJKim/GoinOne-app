@@ -23,7 +23,7 @@ const FilterWrapper = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border: 0.2px;
+  border: 0.3px;
   border-color: #d8d8d8;
   border-radius: 5px;
   margin-right: 3px;

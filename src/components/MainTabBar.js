@@ -24,7 +24,7 @@ function MainTabBar({ state, descriptors, navigation }) {
   // The initial value of translateX is 0.
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: '#fff' }}>
       <View style={S.container}>
         <View>
           <View style={StyleSheet.absoluteFillObject}>

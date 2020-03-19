@@ -12,20 +12,6 @@ import { Ionicons } from '@expo/vector-icons';
 const Tab = createBottomTabNavigator();
 
 const MainTabNavigator = ({ navigation }) => {
-  navigation.setOptions({
-    headerLeft: () => (
-      <TopWrapper>
-        <CoinOneLogo
-          source={{
-            uri: 'https://image.zdnet.co.kr/2018/01/10/lyk_KMgnJltaZmdsqbAf.jpg'
-          }}
-        />
-      </TopWrapper>
-    ),
-    headerRight: () => (
-      <Ionicons name="md-search" size={27} style={{ paddingRight: 15 }} />
-    )
-  });
   return (
     <Tab.Navigator tabBar={props => <MainTabBar {...props} />}>
       <Tab.Screen name="홈" component={HomeTopTabNavigator} />
@@ -37,15 +23,3 @@ const MainTabNavigator = ({ navigation }) => {
 };
 
 export default MainTabNavigator;
-
-const TopWrapper = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 15px;
-`;
-
-const CoinOneLogo = styled.Image`
-  width: 140px;
-  height: 30px;
-`;

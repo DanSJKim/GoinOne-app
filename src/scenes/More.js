@@ -1,17 +1,77 @@
-import React from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, Button } from 'react-native';
 import styled from 'styled-components';
 import MenuButton from '../components/more/MenuButton';
+import { AsyncStorage } from 'react-native';
 
-const menu = [{ name: '고객센터' }, { name: '알림설정' }, { name: '환경설정' }];
+let menu = [{ name: '고객센터' }, { name: '알림설정' }, { name: '환경설정' }];
 
-const More = () => {
+const More = ({ navigation }) => {
+  const [token, setToken] = useState('');
+  console.log('More | token: ', token);
+
+  const onPressLogin = () => {
+    navigation.navigate('Login');
+  };
+
+  const onPressLogout = () => {
+    console.log('onPressLogout');
+    _removeToken();
+    setToken(null);
+
+    navigation.reset({
+      routes: [{ name: 'MainTabNavigator' }]
+    });
+  };
+
+  useEffect(() => {
+    _retrieveToken();
+  }, [token]);
+
+  _removeToken = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      setToken(null);
+    } catch (error) {
+      console.log('removing data error');
+    }
+  };
+
+  _retrieveToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('token');
+      if (value !== null) {
+        // We have data!!
+        console.log('More Scene value: ', value);
+        setToken(value);
+      }
+    } catch (error) {
+      console.log('More Scene retrieving data error');
+      // Error retrieving data
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
         {/* login button */}
+
         <LoginButtonWrapper>
-          <LoginButton title="로그인" />
+          {token ? (
+            <LoginButton
+              title="로그아웃"
+              onPress={() => {
+                onPressLogout();
+              }}
+            />
+          ) : (
+            <LoginButton
+              title="로그인"
+              onPress={() => {
+                onPressLogin();
+              }}
+            />
+          )}
         </LoginButtonWrapper>
 
         {/* welcome text */}
@@ -107,7 +167,8 @@ const CoinOneButtonWrapper = styled.View`
   align-items: center;
   flex-direction: row;
   margin-top: 40px;
-  border-width: 0.2px;
+  border-width: 0.3px;
+  border-color: #858585;
   border-radius: 5px;
   height: 100px;
   padding: 15px;

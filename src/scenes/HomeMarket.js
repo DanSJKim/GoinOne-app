@@ -9,6 +9,20 @@ import Main from '../components/homeMarket/Main';
 
 const HomeMarket = navigation => {
   // console.log('HomeMarket: ', navigation);
+  // navigation.setOptions({
+  //   headerLeft: () => (
+  //     <TopWrapper>
+  //       <CoinOneLogo
+  //         source={{
+  //           uri: 'https://image.zdnet.co.kr/2018/01/10/lyk_KMgnJltaZmdsqbAf.jpg'
+  //         }}
+  //       />
+  //     </TopWrapper>
+  //   ),
+  //   headerRight: () => (
+  //     <Ionicons name="md-search" size={27} style={{ paddingRight: 15 }} />
+  //   )
+  // });
   return (
     <Container>
       {/* 마켓 정렬 필터 */}

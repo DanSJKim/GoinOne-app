@@ -1,4 +1,3 @@
-정규표현식;
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { ScrollView } from 'react-native';
 import styled from 'styled-components';
 
 /*
@@ -23,50 +23,42 @@ const DATA = [
   }
 ];
 
-const RealtimeList = () => {
-  const [tradingDatas, setTradingDatas] = useState([]);
+const RealtimeList = ({ tradeData }) => {
+  const [datas, setDatas] = useState([]);
 
   useEffect(() => {
     console.log('HomeMarketDetail UseEffect:');
 
-    fetch(
-      `http://10.58.2.252:8000/exchange/1`,
-      // `https://api.upbit.com/v1/candles/days?market=KRW-${symbol}&count=200`,
-      {
-        method: 'GET' // or 'PUT'
-      }
-    )
-      .then(response => response.json())
-      .then(data => {
-        setTradingDatas(data.data);
-        data.data.map(item => {
-          tradingPrices.push(parseInt(item.trade_price));
-          console.log('item: ', parseInt(item.trade_price));
-        });
-        setChartOptions(prevState => {
-          prevState.series[0].data = tradingPrices;
-          return {
-            ...prevState
-          };
-        });
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    // fetch(`http://10.58.2.252:8000/exchange/${coinIndex + 1}`, {
+    //   method: 'GET' // or 'PUT'
+    // })
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log('data:: ', data.trade_data);
+    //     setDatas(data.trade_data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error:', error);
+    //   });
 
     // getDatas();
   }, []);
 
   return (
     <Container>
-      {DATA.map((item, index) => {
-        return (
-          <ItemContainer key={index}>
-            <PriceText>{item.price}</PriceText>
-            <QuantityText>{item.quantity}</QuantityText>
-          </ItemContainer>
-        );
-      })}
+      <ScrollView>
+        {tradeData.map((item, index) => {
+          console.log('item::: ', item);
+          return (
+            <ItemContainer key={index}>
+              <PriceText isbuy={item.is_buy}>{parseInt(item.price)}</PriceText>
+              <QuantityText isbuy={item.is_buy}>
+                {parseFloat(item.amount).toFixed(4)}
+              </QuantityText>
+            </ItemContainer>
+          );
+        })}
+      </ScrollView>
     </Container>
   );
 };
@@ -75,19 +67,17 @@ export default RealtimeList;
 
 const Container = styled.View`
   display: flex;
-  flex: 1;
   align-items: center;
-  background-color: #f1f1f1;
+  background-color: #f8f8f8;
   border-radius: 5px;
   padding: 12px 8px 12px 8px;
-  width: 10%;
+  flex: 1;
 `;
 
 const ItemContainer = styled.View`
-  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  width: 160px;
 `;
 
 const PriceText = styled.Text`
@@ -96,9 +86,10 @@ const PriceText = styled.Text`
   border-bottom-width: 3px;
   border-color: blue;
   font-size: 10px;
+  color: ${props => (props.isbuy ? '#e95e76' : '#82b1ed')};
 `;
 
 const QuantityText = styled.Text`
-  color: #e95e76;
+  color: ${props => (props.isbuy ? '#e95e76' : '#82b1ed')};
   font-size: 9px;
 `;

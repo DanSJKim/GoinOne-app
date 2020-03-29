@@ -54,7 +54,7 @@ const HomeMarketDetail = ({ route, navigation }) => {
 
     // 코인 가격 변동 리스트
     fetch(
-      `http://10.58.2.33:8000/exchange/report/${coinIndex + 1}/days`,
+      `http://15.165.17.145:8000/exchange/report/${coinIndex + 1}/days`,
       // `https://api.upbit.com/v1/candles/days?market=KRW-${symbol}&count=200`,
       {
         method: 'GET' // or 'PUT'
@@ -93,7 +93,7 @@ const HomeMarketDetail = ({ route, navigation }) => {
       });
 
     // 거래 체결 리스트
-    fetch(`http://10.58.2.33:8000/exchange/${coinIndex + 1}`, {
+    fetch(`http://15.165.17.145:8000/exchange/${coinIndex + 1}`, {
       method: 'GET' // or 'PUT'
     })
       .then(response => response.json())

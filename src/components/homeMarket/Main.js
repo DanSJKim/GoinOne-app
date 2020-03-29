@@ -17,7 +17,7 @@ const Main = props => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetch('http://10.58.2.33:8000/exchange/1', {
+    fetch('http://15.165.17.145:8000/exchange/1', {
       method: 'GET'
     })
       .then(response => response.json())
@@ -32,7 +32,7 @@ const Main = props => {
 
   const getData = () => {
     setIsLoading(true);
-    fetch('http://10.58.2.33:8000/exchange/1', {
+    fetch('http://15.165.17.145:8000/exchange/1', {
       method: 'GET'
     })
       .then(response => response.json())

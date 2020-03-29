@@ -2,15 +2,15 @@
 
 가상화폐 거래 사이트인 Coinone의 app을 클론했습니다.
 
-개발 인원 및 기간
-개발기간 : 2020/3/9 ~ 2020/3/20
-개발 인원 : 프론트엔트 2명, 네이티브 1명,백엔드 1명
-[backend github](https://github.com/wecode-bootcamp-korea/GoinOne-backend)
+개발 인원 및 기간  
+개발기간 : 2020/3/9 ~ 2020/3/20  
+개발 인원 : 프론트엔트 2명, 네이티브 1명,백엔드 1명  
+[backend github](https://github.com/wecode-bootcamp-korea/GoinOne-backend)  
 [frontend github](https://github.com/wecode-bootcamp-korea/GoinOne-frontend)
 
 ## 사용된 기술
 
-Native : React Native, React Navigation, Styled Component, Highcharts
+Native : React Native, React Navigation, Styled Component, Highcharts  
 Backend : Python, Django web framework, Beautifulsoup, Bcrypt, My SQL, Email Authorization
 
 ## 구현 기능

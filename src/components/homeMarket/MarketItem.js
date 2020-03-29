@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import styled from 'styled-components';
 
@@ -6,35 +6,27 @@ import styled from 'styled-components';
  *  Market List Item
  */
 
-function MarketItem({ nav, symbol, name, nowprice, volume, coinIndex }) {
-  console.log('coinIndex: ', coinIndex);
+function MarketItem({
+  nav,
+  symbol,
+  name,
+  nowprice,
+  volume,
+  coinIndex,
+  yesterdayprice,
+  todaymaxprice
+}) {
+  const [fluctuation, setFluctuation] = useState('');
 
-  //   useEffect(() => {
-  //   console.log('HomeMarketDetail UseEffect:');
+  const getFluctuation = () => {
+    let rate = ((todaymaxprice - yesterdayprice) / yesterdayprice) * 100;
+    setFluctuation(rate);
+  };
 
-  //   fetch(
-  //     `https://api.upbit.com/v1/candles/days?market=KRW-${symbol}&count=200`,
-  //     {
-  //       method: 'GET' // or 'PUT'
-  //     }
-  //   )
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       setTradingDatas(data);
-  //       data.map(item => tradingPrices.push(item.trade_price));
-  //       setChartOptions(prevState => {
-  //         prevState.series[0].data = tradingPrices;
-  //         return {
-  //           ...prevState
-  //         };
-  //       });
-  //     })
-  //     .catch(error => {
-  //       console.error('Error:', error);
-  //     });
+  useEffect(() => {
+    getFluctuation();
+  }, []);
 
-  //   // getDatas();
-  // }, []);
   return (
     <TouchableOpacity
       onPress={() => {
@@ -43,7 +35,12 @@ function MarketItem({ nav, symbol, name, nowprice, volume, coinIndex }) {
           name,
           nowprice,
           volume,
-          coinIndex
+          coinIndex,
+          fluctuation,
+          // 어제 가격 오늘 가격 차이
+          compare: todaymaxprice - yesterdayprice,
+          // 등락률
+          fluctuation: fluctuation
         });
       }}
     >
@@ -62,9 +59,19 @@ function MarketItem({ nav, symbol, name, nowprice, volume, coinIndex }) {
           <MarketFullName>{name}</MarketFullName>
         </NameWrapper>
 
-        <MarketCurrentPrice>{parseInt(nowprice)}</MarketCurrentPrice>
-        <MarketFluctuationRate>-3.63%</MarketFluctuationRate>
-        <MarketTradingValue>{parseInt(volume)}</MarketTradingValue>
+        <MarketCurrentPrice fluctuation={fluctuation}>
+          {parseInt(nowprice).toLocaleString()}
+        </MarketCurrentPrice>
+        <MarketFluctuationRate fluctuation={fluctuation}>
+          {fluctuation > 0
+            ? `+${parseFloat(fluctuation).toFixed(2)}%`
+            : `-${parseFloat(fluctuation).toFixed(2)}%`}
+        </MarketFluctuationRate>
+        <MarketTradingValue>
+          {volume >= 1000000
+            ? `${parseInt(volume / 1000000).toLocaleString()} 백만`
+            : `${parseInt(volume).toLocaleString()}`}
+        </MarketTradingValue>
       </ItemWrapper>
     </TouchableOpacity>
   );
@@ -112,14 +119,14 @@ const MarketCurrentPrice = styled.Text`
   flex: 1.67;
   text-align: right;
   font-weight: 600;
-  color: #1863b6;
+  color: ${props => (props.fluctuation > 0 ? '#e12243' : '#1863b6')};
 `;
 
 const MarketFluctuationRate = styled.Text`
   flex: 1;
   text-align: right;
   font-size: 13px;
-  color: #1863b6;
+  color: ${props => (props.fluctuation > 0 ? '#e12243' : '#1863b6')};
 `;
 
 const MarketTradingValue = styled.Text`

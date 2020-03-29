@@ -9,22 +9,22 @@ const Balance = () => {
 
   useEffect(() => {
     console.log('Balance UseEffect:', token);
-
-    fetch(`http://10.58.2.252:8000/account/balance`, {
-      method: 'GET', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('data: ', data);
-        setAsset(data.total_asset);
+    token &&
+      fetch(`http://10.58.2.33:8000/account/balance`, {
+        method: 'GET', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
       })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          console.log('data: ', data);
+          setAsset(data.total_asset);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
 
     // getDatas();
   }, [token]);
@@ -45,12 +45,10 @@ const Balance = () => {
 
   _retrieveToken();
 
-  console.log('totalasset: ', asset);
-
   return (
     <Container>
       <AssetsTitle>총 보유자산</AssetsTitle>
-      <AssetsAmount>{`${parseInt(asset)}원`}</AssetsAmount>
+      <AssetsAmount>{asset ? `${parseInt(asset)}원` : `0원`}</AssetsAmount>
       {token ? (
         <DetailAssetsWrapper>
           <View style={{ flex: 1 }}>

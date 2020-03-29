@@ -29,7 +29,7 @@ const HomeTopTabNavigator = ({ route }) => {
       >
         <Tab.Screen name="MY" component={HomeMy} />
         <Tab.Screen name="MARKET" component={HomeMarket} />
-        <Tab.Screen name="INFO" component={HomeInfo} />
+        {/* <Tab.Screen name="INFO" component={HomeInfo} /> */}
       </Tab.Navigator>
     </Container>
   );

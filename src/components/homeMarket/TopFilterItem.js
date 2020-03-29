@@ -53,9 +53,9 @@ const ArrowWrapper = styled.View`
 const TopArrow = styled.View`
   width: 0;
   height: 0;
-  border-left-width: 4;
-  border-right-width: 4;
-  border-bottom-width: 4;
+  border-left-width: 4px;
+  border-right-width: 4px;
+  border-bottom-width: 4px;
   background-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
@@ -66,9 +66,9 @@ const TopArrow = styled.View`
 const BottomArrow = styled.View`
   width: 0;
   height: 0;
-  border-left-width: 4;
-  border-right-width: 4;
-  border-top-width: 4;
+  border-left-width: 4px;
+  border-right-width: 4px;
+  border-top-width: 4px;
   background-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;

@@ -113,7 +113,7 @@ function HomeTabBar({ state, descriptors, navigation, position }) {
 export default HomeTabBar;
 
 const MenuText = styled.Text`
-  font-size: 16;
+  font-size: 16px;
   font-weight: 600;
   color: ${props => (props.focused ? '#000' : '#d5d5d5')};
 `;

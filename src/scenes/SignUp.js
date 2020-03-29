@@ -28,6 +28,24 @@ const SignUp = ({ navigation }) => {
   const [number, setNumber] = useState(false);
   const [length, setLength] = useState(false);
 
+  navigation.setOptions({
+    headerTitle: () => {
+      return (
+        <Text style={{ fontSize: 17, fontWeight: '600' }}>coinone.co.kr</Text>
+      );
+    },
+    headerLeft: () => (
+      <Ionicons
+        name="ios-arrow-round-back"
+        size={40}
+        onPress={() => {
+          navigation.pop();
+        }}
+        style={{ marginLeft: 15 }}
+      />
+    )
+  });
+
   useEffect(() => {
     console.log('useEffect:');
     if (upper_case.test(password)) {
@@ -64,7 +82,7 @@ const SignUp = ({ navigation }) => {
 
   const onSubmitPress = () => {
     console.log('press');
-    fetch('http://10.58.2.252:8000/account/signup', {
+    fetch('http://10.58.2.33:8000/account/signup', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json'
@@ -319,7 +337,8 @@ const InputForm = styled.TextInput`
   flex: 1;
   height: 50px;
   margin: 0;
-  border-width: ${props => (props.emailFocus && props.emailFocus ? 1.5 : 0.3)};
+  border-width: ${props =>
+    props.emailFocus && props.emailFocus ? '1.5px' : '0.3px'};
   border-color: ${props =>
     props.emailFocus && props.emailFocus ? '#3359ff' : '#757575'};
   padding: 0 10px;
@@ -332,7 +351,8 @@ const PasswordInputForm = styled.TextInput`
   height: 50px;
   margin: 0;
   padding: 0 10px;
-  border-width: ${props => (props.pwdFocus && props.pwdFocus ? 1.5 : 0.3)};
+  border-width: ${props =>
+    props.pwdFocus && props.pwdFocus ? '1.5px' : '0.3px'};
   border-color: ${props =>
     props.pwdFocus && props.pwdFocus ? '#3359ff' : '#757575'};
   background-color: ${props =>
@@ -348,7 +368,7 @@ const PasswordCheckInputForm = styled.TextInput`
   margin: 0;
   padding: 0 10px;
   border-width: ${props =>
-    props.pwdCheckFocus && props.pwdCheckFocus ? 1.5 : 0.3};
+    props.pwdCheckFocus && props.pwdCheckFocus ? '1.5px' : '0.3px'};
   border-color: ${props =>
     props.pwdCheckFocus && props.pwdCheckFocus ? '#3359ff' : '#757575'};
   background-color: ${props =>

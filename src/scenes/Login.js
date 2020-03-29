@@ -3,9 +3,24 @@ import { View, Text, Button, TouchableOpacity } from 'react-native';
 import { check_email } from '../utils/regexp';
 import { AsyncStorage } from 'react-native';
 import { StackActions } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import styled from 'styled-components';
 
 const Login = ({ navigation }) => {
+  navigation.setOptions({
+    headerLeft: () => (
+      <Ionicons
+        name="ios-arrow-round-back"
+        size={40}
+        onPress={() => {
+          const popAction = StackActions.pop();
+          navigation.dispatch(popAction);
+        }}
+        style={{ marginLeft: 15 }}
+      />
+    )
+  });
+
   const [emailFocus, setEmailFocus] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
   const [input, setInput] = useState({
@@ -55,7 +70,7 @@ const Login = ({ navigation }) => {
   const onSignInPress = () => {
     console.log('signin email: ', email);
     console.log('signin password: ', password);
-    fetch('http://10.58.2.252:8000/account/signin', {
+    fetch('http://10.58.2.33:8000/account/signin', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json'
@@ -154,7 +169,8 @@ const InputWrapper = styled.View`
 const EmailInput = styled.TextInput`
   height: 50px;
   margin: 10px 15px 5px 15px;
-  border-width: ${props => (props.emailFocus && props.emailFocus ? 1.5 : 0.3)};
+  border-width: ${props =>
+    props.emailFocus && props.emailFocus ? '1.5px' : '0.3px'};
   border-color: ${props =>
     props.emailFocus && props.emailFocus ? '#3359ff' : '#757575'};
   padding: 0 10px;
@@ -163,7 +179,8 @@ const EmailInput = styled.TextInput`
 const PasswordInput = styled.TextInput`
   height: 50px;
   margin: 5px 15px 5px 15px;
-  border-width: ${props => (props.pwdFocus && props.pwdFocus ? 1.5 : 0.3)};
+  border-width: ${props =>
+    props.pwdFocus && props.pwdFocus ? '1.5px' : '0.3px'};
   border-color: ${props =>
     props.pwdFocus && props.pwdFocus ? '#3359ff' : '#757575'};
   padding: 0 10px;

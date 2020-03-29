@@ -1,13 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, ScrollView, Image } from 'react-native';
-import styled from 'styled-components';
+import { Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
+import styled from 'styled-components';
 
 const SignUpTerms = ({ navigation }) => {
   const [allCheck, setAllCheck] = useState(false);
   const [firstCheck, setFirstCheck] = useState(false);
   const [secondCheck, setSecondCheck] = useState(false);
   const [thirdCheck, setThirdCheck] = useState(false);
+
+  navigation.setOptions({
+    headerTitle: () => {
+      return (
+        <Text style={{ fontSize: 17, fontWeight: '600' }}>coinone.co.kr</Text>
+      );
+    },
+    headerLeft: () => (
+      <Ionicons
+        name="ios-arrow-round-back"
+        size={40}
+        onPress={() => {
+          navigation.pop();
+        }}
+        style={{ marginLeft: 15 }}
+      />
+    )
+  });
 
   useEffect(() => {
     console.log('useEffect');

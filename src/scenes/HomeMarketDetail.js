@@ -9,8 +9,21 @@ import { Ionicons } from '@expo/vector-icons';
 import styled from 'styled-components';
 
 const HomeMarketDetail = ({ route, navigation }) => {
+  const [marketList, setMarketList] = useState([]);
+  const [tradeData, setTradeData] = useState([]);
+  const [sellData, setSellData] = useState([]);
+  const [buyData, setBuyData] = useState([]);
   const [tradingDatas, setTradingDatas] = useState([]);
-  const { symbol, name, nowprice, volume, coinIndex } = route.params;
+  const [chartColor, setChartColor] = useState('');
+  const {
+    symbol,
+    name,
+    nowprice,
+    volume,
+    coinIndex,
+    compare,
+    fluctuation
+  } = route.params;
   let tradingPrices = [];
   console.log('route::: ', route.params.nav);
 
@@ -36,36 +49,66 @@ const HomeMarketDetail = ({ route, navigation }) => {
     )
   });
 
-  // useEffect(() => {
-  //   console.log('HomeMarketDetail UseEffect:');
+  useEffect(() => {
+    console.log('HomeMarketDetail UseEffect:');
 
-  //   fetch(
-  //     `http://10.58.2.252:8000/exchange/report/${coinIndex + 1}/days`,
-  //     // `https://api.upbit.com/v1/candles/days?market=KRW-${symbol}&count=200`,
-  //     {
-  //       method: 'GET' // or 'PUT'
-  //     }
-  //   )
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       setTradingDatas(data.data);
-  //       data.data.map(item => {
-  //         tradingPrices.push(parseInt(item.trade_price));
-  //         console.log('item: ', parseInt(item.trade_price));
-  //       });
-  //       setChartOptions(prevState => {
-  //         prevState.series[0].data = tradingPrices;
-  //         return {
-  //           ...prevState
-  //         };
-  //       });
-  //     })
-  //     .catch(error => {
-  //       console.error('Error:', error);
-  //     });
+    // 코인 가격 변동 리스트
+    fetch(
+      `http://10.58.2.33:8000/exchange/report/${coinIndex + 1}/days`,
+      // `https://api.upbit.com/v1/candles/days?market=KRW-${symbol}&count=200`,
+      {
+        method: 'GET' // or 'PUT'
+      }
+    )
+      .then(response => response.json())
+      .then(data => {
+        setTradingDatas(data.data);
+        data.data.map(item => {
+          tradingPrices.push(parseInt(item.trade_price));
+          console.log('item: ', parseInt(item.trade_price));
+        });
 
-  //   // getDatas();
-  // }, []);
+        let chartColor = '';
+        let lineColor = '';
+        if (compare > 0) {
+          chartColor = '#ff7d9d';
+          lineColor = '#e44f72';
+        } else {
+          chartColor = '#82b1ed';
+          lineColor = '#1863b6';
+        }
+        setChartOptions(prevState => {
+          // 차트 색상
+          prevState.series[0].color.stops[0] = [0, chartColor];
+          // 차트 선 색상
+          prevState.plotOptions.series.lineColor = lineColor;
+          prevState.series[0].data = tradingPrices;
+          return {
+            ...prevState
+          };
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+    // 거래 체결 리스트
+    fetch(`http://10.58.2.33:8000/exchange/${coinIndex + 1}`, {
+      method: 'GET' // or 'PUT'
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('data:: ', data.trade_data);
+        setTradeData(data.trade_data);
+        setSellData(data.offer_sell_data);
+        setBuyData(data.offer_buy_data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+    // getDatas();
+  }, []);
 
   const [chartOptions, setChartOptions] = useState(
     {
@@ -101,7 +144,7 @@ const HomeMarketDetail = ({ route, navigation }) => {
           color: {
             linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
             stops: [
-              [0, '#ff7d9d'],
+              [0, '#e12243'],
               [1, '#ffffff']
             ]
           },
@@ -122,30 +165,55 @@ const HomeMarketDetail = ({ route, navigation }) => {
   );
 
   renderContent = () => {
-    <View>12312313</View>;
+    return (
+      <BottomWrapper>
+        <Text>123123</Text>
+      </BottomWrapper>
+    );
   };
 
   renderHeader = () => {
-    <View>53555</View>;
+    return (
+      <BottomWrapper>
+        <Text>123243</Text>
+      </BottomWrapper>
+    );
   };
 
+  console.log('tradeData??', tradeData);
   return (
     <Container>
       <TopContainer>
         {/* 코인 가격 정보 */}
         <LeftContainer>
           <View>
-            <Price>{parseInt(nowprice)}</Price>
-            <FluctuationPrice>162,0200</FluctuationPrice>
-            <TradingValue>{parseInt(volume)}</TradingValue>
+            <Price>{parseInt(nowprice).toLocaleString()}</Price>
+            <FluctuationPrice compare={compare}>
+              {compare.toLocaleString()}
+            </FluctuationPrice>
+            <TradingValue>
+              {volume >= 1000000
+                ? `${parseInt(volume / 1000000).toLocaleString()} 백만`
+                : `${parseInt(volume).toLocaleString()}`}
+            </TradingValue>
           </View>
           <FluctuationRateWrapper>
-            <FluctuationRate>-2.38%</FluctuationRate>
+            <FluctuationRate compare={compare}>
+              {fluctuation > 0
+                ? `+${parseFloat(fluctuation).toFixed(2)}%`
+                : `-${parseFloat(fluctuation).toFixed(2)}%`}
+            </FluctuationRate>
           </FluctuationRateWrapper>
         </LeftContainer>
         {/* 차트 */}
         <RightContainer>
-          <TouchableOpacity onPress={() => console.log('123')}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('HomeMarketProChart', {
+                coinIndex
+              })
+            }
+          >
             <HighchartsReactNative
               useCDN={true}
               styles={styles.chartContainer}
@@ -158,14 +226,19 @@ const HomeMarketDetail = ({ route, navigation }) => {
       <MainContainer>
         <TradeOrder>
           {/* 매수, 매도 리스트  */}
-          <TradeOrderList />
+          <TradeOrderList sellData={sellData} buyData={buyData} />
         </TradeOrder>
         {/* 실시간 거래 체결 리스트 */}
-        <RealtimeList coinIndex={coinIndex} />
+        <RealtimeList tradeData={tradeData} />
       </MainContainer>
-      <View>
-        <BottomSheet snapPoints={[450, 300, 0]} />
-      </View>
+      <BottomWrapper>
+        {/* <BuyButtonWrapper>
+          <BuyButtonText>매수</BuyButtonText>
+        </BuyButtonWrapper>
+        <SellButtonWrapper>
+          <SellButtonText>매도</SellButtonText>
+        </SellButtonWrapper> */}
+      </BottomWrapper>
     </Container>
   );
 };
@@ -213,7 +286,7 @@ const Price = styled.Text`
 
 const FluctuationPrice = styled.Text`
   margin-top: 5px;
-  color: #e12243;
+  color: ${props => (props.compare > 0 ? '#e12243' : '#1863b6')};
   font-weight: 600;
 `;
 
@@ -224,7 +297,7 @@ const FluctuationRateWrapper = styled.View`
 `;
 
 const FluctuationRate = styled.Text`
-  color: #e12243;
+  color: ${props => (props.compare > 0 ? '#e12243' : '#1863b6')};
 `;
 
 const TradingValue = styled.Text`
@@ -235,16 +308,16 @@ const TradingValue = styled.Text`
 
 const RightContainer = styled.View``;
 
-// const chartContainer = styled.HighchartsReactNative``;
-
 const MainContainer = styled.View`
   display: flex;
   flex-direction: row;
-  margin: 15px;
-  height: 100%;
+  margin: 15px 15px 0 15px;
+  flex: 9;
 `;
 
-const TradeOrder = styled.View``;
+const TradeOrder = styled.View`
+  flex: 1;
+`;
 
 const HeaderWrapper = styled.View`
   align-items: center;
@@ -258,3 +331,29 @@ const HeaderName = styled.Text`
   font-size: 11px;
   color: #494949;
 `;
+
+const BottomWrapper = styled.Text`
+  flex: 1;
+  width: 100%;
+`;
+
+// const BuyButtonWrapper = styled.View`
+//   background-color: #e12243;
+//   flex: 1;
+//   margin-right: 5px;
+// `;
+
+// const BuyButtonText = styled.Text`
+//   color: #fff;
+// `;
+
+// const SellButtonWrapper = styled.View`
+//   background-color: #3359ff;
+//   width: 50%;
+//   flex: 1;
+// `;
+
+// const SellButtonText = styled.Text`
+//   color: #fff;
+//   font-size: 15px;
+// `;

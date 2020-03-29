@@ -20,6 +20,7 @@ function MarketItem({
 
   const getFluctuation = () => {
     let rate = ((todaymaxprice - yesterdayprice) / yesterdayprice) * 100;
+    console.log('rate:: ', rate);
     setFluctuation(rate);
   };
 
@@ -59,10 +60,18 @@ function MarketItem({
           <MarketFullName>{name}</MarketFullName>
         </NameWrapper>
 
-        <MarketCurrentPrice fluctuation={fluctuation}>
+        <MarketCurrentPrice
+          today={todaymaxprice}
+          yesterday={yesterdayprice}
+          fluctuation={fluctuation}
+        >
           {parseInt(nowprice).toLocaleString()}
         </MarketCurrentPrice>
-        <MarketFluctuationRate fluctuation={fluctuation}>
+        <MarketFluctuationRate
+          today={todaymaxprice}
+          yesterday={yesterdayprice}
+          fluctuation={fluctuation}
+        >
           {fluctuation > 0
             ? `+${parseFloat(fluctuation).toFixed(2)}%`
             : `-${parseFloat(fluctuation).toFixed(2)}%`}
@@ -119,14 +128,16 @@ const MarketCurrentPrice = styled.Text`
   flex: 1.67;
   text-align: right;
   font-weight: 600;
-  color: ${props => (props.fluctuation > 0 ? '#e12243' : '#1863b6')};
+  color: ${props =>
+    props.today - props.yesterday > 0 ? '#e12243' : '#1863b6'};
 `;
 
 const MarketFluctuationRate = styled.Text`
   flex: 1;
   text-align: right;
   font-size: 13px;
-  color: ${props => (props.fluctuation > 0 ? '#e12243' : '#1863b6')};
+  color: ${props =>
+    props.today - props.yesterday > 0 ? '#e12243' : '#1863b6'};
 `;
 
 const MarketTradingValue = styled.Text`

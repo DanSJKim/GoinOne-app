@@ -70,7 +70,7 @@ const Login = ({ navigation }) => {
   const onSignInPress = () => {
     console.log('signin email: ', email);
     console.log('signin password: ', password);
-    fetch('http://10.58.2.33:8000/account/signin', {
+    fetch('http://15.165.17.145:8000/account/signin', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json'
@@ -81,9 +81,9 @@ const Login = ({ navigation }) => {
       .then(data => {
         console.log('response json data: ', data);
         // 토큰 값을 받아오는 것이 성공하면 받아온 토큰 값을 AsyncStorage에 저장한다.
-        if (data.access_token) {
+        if (data.Authorization) {
           console.log('!!!');
-          _storeToken(data.access_token);
+          _storeToken(data.Authorization);
           // const popAction = StackActions.pop();
           // navigation.dispatch(popAction);
           navigation.reset({

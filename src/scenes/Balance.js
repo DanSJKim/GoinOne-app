@@ -10,7 +10,7 @@ const Balance = () => {
   useEffect(() => {
     console.log('Balance UseEffect:', token);
     token &&
-      fetch(`http://10.58.2.33:8000/account/balance`, {
+      fetch(`http://15.165.17.145:8000/account/balance`, {
         method: 'GET', // or 'PUT'
         headers: {
           'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ const Balance = () => {
         .then(response => response.json())
         .then(data => {
           console.log('data: ', data);
-          setAsset(data.total_asset);
+          setAsset(parseInt(data.total_asset.currency_balance));
         })
         .catch(error => {
           console.error('Error:', error);
@@ -48,7 +48,7 @@ const Balance = () => {
   return (
     <Container>
       <AssetsTitle>총 보유자산</AssetsTitle>
-      <AssetsAmount>{asset ? `${parseInt(asset)}원` : `0원`}</AssetsAmount>
+      <AssetsAmount>{asset ? `${asset}원` : `0원`}</AssetsAmount>
       {token ? (
         <DetailAssetsWrapper>
           <View style={{ flex: 1 }}>

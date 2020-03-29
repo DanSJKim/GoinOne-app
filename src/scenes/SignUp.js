@@ -82,7 +82,7 @@ const SignUp = ({ navigation }) => {
 
   const onSubmitPress = () => {
     console.log('press');
-    fetch('http://10.58.2.33:8000/account/signup', {
+    fetch('http://15.165.17.145:8000/account/signup', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json'

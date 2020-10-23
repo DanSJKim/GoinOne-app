@@ -5,8 +5,7 @@
 개발 인원 및 기간  
 개발기간 : 2020/3/9 ~ 2020/3/20  
 개발 인원 : 프론트엔트 2명, 네이티브 1명,백엔드 1명  
-[backend github](https://github.com/wecode-bootcamp-korea/GoinOne-backend)  
-[frontend github](https://github.com/wecode-bootcamp-korea/GoinOne-frontend)
+[backend github](https://github.com/wecode-bootcamp-korea/GoinOne-backend) 
 
 ## 사용된 기술
 
@@ -25,4 +24,4 @@ Backend : Python, Django web framework, Beautifulsoup, Bcrypt, My SQL, Email Aut
 - Animation이 들어간 Custom TabNavigation 구현
 
 데모영상
-[GoinOne](https://www.youtube.com/watch?v=eLbEtvPixm8)
+[GoinOne](https://www.youtube.com/watch?v=6vJOujk9AWA)

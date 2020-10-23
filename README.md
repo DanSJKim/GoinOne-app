@@ -1,4 +1,4 @@
-# 프로젝트 : baskinrobbins.co.kr/ 클론
+# 프로젝트 : coinone/ 앱 클론
 
 가상화폐 거래 사이트인 Coinone의 app을 클론했습니다.
 

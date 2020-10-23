@@ -22,6 +22,3 @@ Backend : Python, Django web framework, Beautifulsoup, Bcrypt, My SQL, Email Aut
 - Highcharts Library를 이용해 코인의 가격 변동률을 차트로 시각화
 - React Navigation을 이용한 화면 전환 기능 구현
 - Animation이 들어간 Custom TabNavigation 구현
-
-데모영상
-[GoinOne](https://www.youtube.com/watch?v=6vJOujk9AWA)
